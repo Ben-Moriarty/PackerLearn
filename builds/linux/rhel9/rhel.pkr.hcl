@@ -7,6 +7,13 @@ packer {
   }
 }
 
+locals {
+  iso_paths = {
+    content_library = "${var.common_iso_content_library}/${var.iso_content_library_item}/${var.iso_file}"
+    datastore = "[${var.common_iso_datastore}] ${var.iso_datastore_path}/${var.iso_file}"
+  }
+}
+
 source "vsphere-iso" "linux-rhel" {
 
   // vCenter Server Endpoint Settings and Credentials
