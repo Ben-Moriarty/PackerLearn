@@ -29,8 +29,14 @@ source "vsphere-iso" "alpine-builder" {
 
     storage {
         disk_size = var.vm_disk_size
-        disk_thin_provisioned = true
+        disk_thin_provisioned = true:w
     }
+
+    boot_command = [
+        "<wait30>"
+        "root<enter><wait>"
+        "mount -t vfat"
+    ]
 }
 
 build {
