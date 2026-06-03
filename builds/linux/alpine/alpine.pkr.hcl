@@ -27,15 +27,24 @@ source "vsphere-iso" "alpine-builder" {
     disk_controller_type = var.vm_disk_controller_type
     datastore = var.vsphere_datastore
 
+    http_directory = "${path.root}/http"
+    http_port_min = var.http_port_min
+    http_port_max = var.http_port_max
+
     storage {
         disk_size = var.vm_disk_size
-        disk_thin_provisioned = true:w
+        disk_thin_provisioned = true
+    }
+
+    network_adapters {
+        network_card = var.vm_network_card
+        network = var.vm_network_name
     }
 
     boot_command = [
-        "<wait30>"
-        "root<enter><wait>"
-        "mount -t vfat"
+        "root<enter><wait>",
+        "ifconfig eth0 up && udhcpc -i eth0 -x 0x33:00000e10<enter><wait5>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort}}/answerfile<enter><wait5>"
     ]
 }
 

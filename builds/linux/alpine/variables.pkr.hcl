@@ -79,3 +79,11 @@ variable "vm_name" {
     type = string
     default = "noche-alpine"
 }
+
+variable "http_port_min" {
+    type = number
+}
+
+variable "http_port_max" {
+    type = number
+}
