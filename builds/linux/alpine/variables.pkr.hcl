@@ -34,10 +34,6 @@ variable "vsphere_datastore_iso_path" {
     type = string
 }
 
-variable "root_password" {
-    type = string
-}
-
 variable "ssh_username" {
     type = string
 }
@@ -86,4 +82,9 @@ variable "http_port_min" {
 
 variable "http_port_max" {
     type = number
+}
+
+variable "root_password" {
+    type = string
+    sensitive = true
 }

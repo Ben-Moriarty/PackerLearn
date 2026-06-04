@@ -44,7 +44,18 @@ source "vsphere-iso" "alpine-builder" {
     boot_command = [
         "root<enter><wait>",
         "ifconfig eth0 up && udhcpc -i eth0 -x 0x33:00000e10<enter><wait5>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort}}/answerfile<enter><wait5>"
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answerfile<enter>",
+        "setup-alpine -f ./answerfile<enter>",
+        "<wait5>",
+        "${var.root_password}<enter>",
+        "${var.root_password}<enter>",
+        "y<enter><wait15>",
+        "reboot<enter><wait15>",
+        "root<enter>",
+        "${var.root_password}<enter><wait>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/setup.sh<enter>",
+        "chmod +x ./setup.sh<enter>",
+        "./setup.sh<enter>"
     ]
 }
 
