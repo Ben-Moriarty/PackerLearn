@@ -31,6 +31,9 @@ source "vsphere-iso" "alpine-builder" {
     http_port_min = var.http_port_min
     http_port_max = var.http_port_max
 
+    convert_to_template = var.convert_to_template
+    folder = var.vsphere_template_folder
+
     storage {
         disk_size = var.vm_disk_size
         disk_thin_provisioned = true
@@ -44,8 +47,8 @@ source "vsphere-iso" "alpine-builder" {
     boot_command = [
         "root<enter><wait>",
         "ifconfig eth0 up && udhcpc -i eth0 -x 0x33:00000e10<enter><wait5>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answerfile<enter>",
-        "setup-alpine -f ./answerfile<enter>",
+        "wget -O /tmp/answerfile http://{{ .HTTPIP }}:{{ .HTTPPort }}/answerfile<enter>",
+        "setup-alpine -f /tmp/answerfile<enter>",
         "<wait5>",
         "${var.root_password}<enter>",
         "${var.root_password}<enter>",
@@ -53,12 +56,15 @@ source "vsphere-iso" "alpine-builder" {
         "reboot<enter><wait15>",
         "root<enter>",
         "${var.root_password}<enter><wait>",
-        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/setup.sh<enter>",
-        "chmod +x ./setup.sh<enter>",
-        "./setup.sh<enter>"
+        "wget -O /tmp/setup.sh http://{{ .HTTPIP }}:{{ .HTTPPort }}/setup.sh<enter>",
+        "chmod +x /tmp/setup.sh && /tmp/setup.sh<enter>",
     ]
 }
 
 build {
-    sources = ["source.vsphere-iso.alpine-builder"]
+  sources = ["source.vsphere-iso.alpine-builder"]
+
+  provisioner "shell" {
+    inline = ["ls /"]
+  }
 }

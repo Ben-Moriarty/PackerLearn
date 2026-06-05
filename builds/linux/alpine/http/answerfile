@@ -11,7 +11,7 @@ hostname alpine
 TIMEZONEOPTS="-z UTC"
 PROXYOPTS="none"
 APKREPOSOPTS="-1"
-USEROPTS="-a -u packer"
+USEROPTS="-a -u noche"
 SSHDOPTS="openssh"
 NTPOPTS="none"
 DISKOPTS="-m sys /dev/sda"

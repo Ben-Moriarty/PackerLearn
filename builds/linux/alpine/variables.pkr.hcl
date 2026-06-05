@@ -88,3 +88,11 @@ variable "root_password" {
     type = string
     sensitive = true
 }
+
+variable "convert_to_template" {
+    type = bool
+}
+
+variable "vsphere_template_folder" {
+    type = string
+}
